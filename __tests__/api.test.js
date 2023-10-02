@@ -7,7 +7,7 @@ const app = require('../db/app');
 beforeEach(() => seed(data));
 afterAll(() => db.end());
 
-describe('GET /api/topics', () => {
+describe.only('GET /api/topics', () => {
     test('Responds with status code 200 and with response message of all topics', () => {
     return request(app)
         .get('/api/topics')
