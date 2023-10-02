@@ -37,14 +37,14 @@ describe('GET /api/topics', () => {
             });
     })
 })
-describe('GET /api sends an object with all apis available', () => {
-    test('responds with a status code of 200 and sends an object with all endpoints', () => {
-        return request(app)
-        .get('/api')
-        .expect(200)
-        .then(({body}) => {
-            console.log(body)
-            expect(body).toEqual()
-        })
-    })
-})
+// describe('GET /api sends an object with all apis available', () => {
+//     test('responds with a status code of 200 and sends an object with all endpoints', () => {
+//         return request(app)
+//         .get('/api')
+//         .expect(200)
+//         .then(({body}) => {
+//             console.log(body)
+//             expect(body).toEqual()
+//         })
+//     })
+// })

@@ -6,6 +6,6 @@ exports.fetchTopics = () => {
     })   
 }
 
-exports.fetchAllEndpoints = () => {
-    return db.query
-}
+// exports.fetchAllEndpoints = () => {
+//     return db.query
+// }

@@ -4,7 +4,7 @@ const app = express()
 const {getTopics, getAllEndpoints} = require('../db/controllers/nc-news-controller')
 
 app.get('/api/topics', getTopics)
-app.get('/api', getAllEndpoints)
+// app.get('/api', getAllEndpoints)
 
 app.all('/*', (req, res) => {
         res.status(404).send({mess: 'not found'})

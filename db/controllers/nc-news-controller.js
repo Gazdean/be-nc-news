@@ -6,6 +6,6 @@ exports.getTopics = (req, res, next) => {
     });
 };
 
-exports.getAllEndpoints = (req, res, next) => {
-    fetchAllEndpoints
-}
+// exports.getAllEndpoints = (req, res, next) => {
+//     fetchAllEndpoints
+// }
