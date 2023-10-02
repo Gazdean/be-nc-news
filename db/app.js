@@ -11,7 +11,7 @@ app.all('/*', (req, res) => {
 app.use((err, req, res, next) => {
     if (err === 500) {
         res.status(500).send({mess: 'Internal Server Error'})
-    }
+    };
   });
 
   

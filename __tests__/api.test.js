@@ -34,7 +34,6 @@ describe.only('GET /api/topics', () => {
         .get('/api/notapath')
         .expect(404)
         .then(({ body }) => {
-            console.log(body)
             expect(body).toEqual({mess: 'not found'});
             });
     })
