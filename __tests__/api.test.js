@@ -22,9 +22,10 @@ describe.only('GET /api/topics', () => {
         .then(({ body }) => {
         const topics = body.topics;
         expect(Array.isArray(topics)).toBe(true);
+        expect(topics.length).toBe(3)
         topics.forEach((topic) => {
-            expect(typeof topic.slug).toBe('string');
-            expect(typeof topic.description).toBe('string');            
+            expect(topic).toHaveProperty('slug', expect.any(String));            
+            expect(topic).toHaveProperty('description', expect.any(String));            
         });
         });
      }); 
@@ -33,7 +34,8 @@ describe.only('GET /api/topics', () => {
         .get('/api/notapath')
         .expect(404)
         .then(({ body }) => {
-            expect(body.mess).toBe('not found');
+            console.log(body)
+            expect(body).toEqual({mess: 'not found'});
             });
     })
 })
