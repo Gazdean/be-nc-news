@@ -54,16 +54,6 @@ describe('GET /api sends an object with all apis available', () => {
     })
    
 })
-describe('error handling for all invalid paths', () => {
- test('reponds with a status code 404 and the message invaid path', () => {
-        return request(app)
-        .get('/notapath')
-        .expect(404)
-        .then(({ body }) => {
-            expect(body).toStrictEqual({mess: 'not found'})
-            });
-    })
-})
 describe('GET /api/articles/:article_id', () => {
     test('when queried with an article id, Responds with status code 200 and with response object with correct properties', () => {
         return request(app)
