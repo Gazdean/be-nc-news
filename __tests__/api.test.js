@@ -7,8 +7,8 @@ const app = require('../db/app');
 beforeEach(() => seed(data));
 afterAll(() => db.end());
 
-describe.only('GET /api/topics', () => {
-    test('Responds with status code 200 and with response message of all topics', () => {
+describe('GET /api/topics', () => {
+    test('Responds with status code 200 and with response an object of all topics', () => {
     return request(app)
         .get('/api/topics')
         .expect(200)
@@ -35,6 +35,16 @@ describe.only('GET /api/topics', () => {
         .expect(404)
         .then(({ body }) => {
             expect(body).toEqual({mess: 'not found'});
+            });
+    })
+})
+describe('GET /api/articles/:article_id', () => {
+    test('when queried with an article id, Responds with status code 200 and with response object with correct properties', () => {
+        return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toHaveProperty('article');
             });
     })
 })

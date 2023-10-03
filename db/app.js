@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express()
 
-const {getTopics} = require('../db/controllers/nc-news-controller')
+const {getTopics} = require('./controllers/topics-controller')
+const {getArticlesById} = require('./controllers/articles-controller')
 
 app.get('/api/topics', getTopics)
+app.get('/api/articles/:article_id', getArticlesById)
 
 app.all('/*', (req, res) => {
         res.status(404).send({mess: 'not found'})
