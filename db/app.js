@@ -1,21 +1,17 @@
 const express = require('express')
 const app = express()
 
-const {getTopics, getAllEndpoints} = require('../db/controllers/nc-news-controller')
+const {getTopics, getAllEndpoints} = require('./controllers/topics-controller')
+const {getArticlesById} = require('./controllers/articles-controller')
+const { internalServerError, psqlError, customError, invalidEndpoint } = require('./controllers/error.controller')
 
 app.get('/api/topics', getTopics)
 app.get('/api', getAllEndpoints)
-
-app.all('/*', (req, res) => {
-        res.status(404).send({mess: 'not found'})
-    })
-app.use((err, req, res, next) => {
-    if (err === 500) {
-        console.log(err, ('Internal server error'))
-        res.status(500).send({mess: 'Internal Server Error'})
-    }
-  });
-
-  
+app.get('/api/articles/:article_id', getArticlesById)
+app.all('/*', invalidEndpoint)
+app.use(customError)
+app.use(customError)
+app.use(psqlError)
+app.use(internalServerError);
 
 module.exports = app

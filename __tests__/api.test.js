@@ -54,13 +54,49 @@ describe('GET /api sends an object with all apis available', () => {
     })
    
 })
+describe('GET /api/articles/:article_id', () => {
+    test('when queried with an article id, Responds with status code 200 and with response object with correct properties', () => {
+        return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then(({ body }) => {
+            expect(body.article).toMatchObject({ 
+                article_id: 1,
+                title: expect.any(String),
+                topic: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                article_img_url: expect.any(String)
+            })          
+        });
+    })
+    test('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {
+        return request(app)
+          .get('/api/articles/99999')
+          .expect(404)        
+          .then(({body}) => {
+            expect(body.message).toBe('article_id does not exist');
+          });
+      });
+    test("when client uses an invalid article_id responds with status code 400 and an error message ", () => {
+        return request(app)
+        .get("/api/articles/notANumber")
+        .expect(400)
+        .then(({ body }) => {
+        expect(body.message).toBe('bad request');
+        });
+    })
+})
+
 describe('error handling for all invalid paths', () => {
- test('reponds with a status code 404 and the message invaid path', () => {
+    test('reponds with a status code 404 and the message invaid path', () => {
         return request(app)
         .get('/notapath')
         .expect(404)
         .then(({ body }) => {
-            expect(body).toStrictEqual({mess: 'not found'})
+            expect(body.message).toBe('not found')
             });
-    })
+})
 })
