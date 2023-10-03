@@ -1,8 +1,10 @@
 const db = require('../db/connection');
 const data = require('../db/data/test-data');
+const fs = require('fs/promises');
 const seed = require('../db/seeds/seed');
 const request = require("supertest");
 const app = require('../db/app');
+const endpoints = require('../endpoints.json')
 
 beforeEach(() => seed(data));
 afterAll(() => db.end());
@@ -28,23 +30,37 @@ describe('GET /api/topics', () => {
         });
         });
      }); 
-    test('reponds with a status code 404 and the messages invaid path', () => {
+})
+describe('GET /api sends an object with all apis available', () => {
+    test('responds with a status code of 200 and sends an object with all endpoints', () => {
         return request(app)
-        .get('/api/notapath')
+        .get('/api')
+        .expect(200)
+        .then(({body}) => {
+            expect(body).toEqual(endpoints);
+        })
+    })
+    test('the response contains the correct keys and is of correct length', () => {
+        return request(app)
+        .get('/api')
+        .then(({body}) => {
+            for(const key in body) {
+                expect(body[key]).toHaveProperty('description');
+                expect(body[key]).toHaveProperty('queries');
+                expect(body[key]).toHaveProperty('exampleResponse');
+                expect(Object.keys(body[key]).length).toBe(3)              
+            }   
+        })
+    })
+   
+})
+describe('error handling for all invalid paths', () => {
+ test('reponds with a status code 404 and the message invaid path', () => {
+        return request(app)
+        .get('/notapath')
         .expect(404)
         .then(({ body }) => {
-            expect(body.mess).toBe('not found');
+            expect(body).toStrictEqual({mess: 'not found'})
             });
     })
 })
-// describe('GET /api sends an object with all apis available', () => {
-//     test('responds with a status code of 200 and sends an object with all endpoints', () => {
-//         return request(app)
-//         .get('/api')
-//         .expect(200)
-//         .then(({body}) => {
-//             console.log(body)
-//             expect(body).toEqual()
-//         })
-//     })
-// })
