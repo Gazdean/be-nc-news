@@ -1,10 +1,11 @@
 const express = require('express')
 const app = express()
 
-const {getTopics} = require('./controllers/topics-controller')
+const {getTopics, getAllEndpoints} = require('./controllers/topics-controller')
 const {getArticlesById} = require('./controllers/articles-controller')
 
 app.get('/api/topics', getTopics)
+app.get('/api', getAllEndpoints)
 app.get('/api/articles/:article_id', getArticlesById)
 app.all('/*', (req, res) => {
         res.status(404).send({mess: 'not found'})
@@ -26,9 +27,10 @@ app.use((err, req, res, next) => {
 
 app.use((err, req, res, next) => {  
     if (err === 500) {
+        console.log(err, ('Internal server error'))
         res.status(500).send({mess: 'Internal Server Error'})
-    };
-});
+    }
+  });
 
   
 
