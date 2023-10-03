@@ -6,7 +6,14 @@ exports.fetchArticlesById = (article_id) => {
         `SELECT * FROM articles
          WHERE article_id = $1`, [article_id])
     .then((result)=> {
-        console.log(result.rows, "<<<<<<<<<<<<<<<")
-        return {article: result.rows[0]};
+        const { rows } = result
+        console.log(rows)
+        if (rows.length === 0) {
+            return Promise.reject({ 
+                status: 404, mess: 'article_id does not exist'
+        })
+        } else {
+            return {article: result.rows[0]};
+        }
     })   
 };
