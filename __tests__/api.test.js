@@ -90,6 +90,53 @@ describe('GET /api/articles/:article_id', () => {
     })
 })
 
+describe('GET /api/articles/:article_id/comments', () => {
+    test('when queried with an article id, Responds with status code 200 and with response object with correct properties', () => {
+        return request(app)
+        .get('/api/articles/1/comments')
+        .expect(200)
+        .then(({ body }) => {
+            const comments = body.comments
+            comments.forEach((comment) => {
+                expect(comment).toMatchObject({ 
+                    article_id: 1,
+                    comment_id: expect.any(Number),
+                    votes: expect.any(Number),
+                    author: expect.any(String),
+                    body: expect.any(String),
+                    created_at: expect.any(String),
+                })
+            })          
+        });
+    })
+    test('the most recent comments are served first ', () => {
+        return request(app)
+        .get('/api/articles/1/comments')
+        .expect(200)
+        .then(({ body }) => {
+            const comments = body.comments
+            console.log(comments)
+            expect(comments).toBeSortedBy('created_at', {descending: true})
+        })
+    })
+    test('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {
+        return request(app)
+          .get('/api/articles/99999/comments')
+          .expect(404)        
+          .then(({body}) => {
+            expect(body.message).toBe('article_id does not exist');
+          });
+      });
+    test("when client uses an invalid article_id responds with status code 400 and an error message ", () => {
+        return request(app)
+        .get("/api/articles/notANumber/comments")
+        .expect(400)
+        .then(({ body }) => {
+        expect(body.message).toBe('bad request');
+        });
+    })
+})
+
 describe('error handling for all invalid paths', () => {
     test('reponds with a status code 404 and the message invaid path', () => {
         return request(app)
