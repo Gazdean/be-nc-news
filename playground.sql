@@ -1,5 +1,5 @@
 \c nc_news_test  
 
-SELECT * FROM articles
-WHERE article_id = 9999
-
+INSERT INTO comments (body, author, article_id)
+VALUES ('jhdfgjhdsagfjf', 'butter_bridge', 2)
+RETURNING *;
