@@ -81,7 +81,6 @@
   "DELETE /api/comments/:comment_id": {
     "description": "use comment_id to delete a comment",
     "queries": ["comment_id"],
-    "request body": "",
     "exampleResponse": "no response"
   }
 }
