@@ -97,6 +97,48 @@ exports.createArticleComment = (article_id, username, body) => {
         }  
     })
 }
-// exports.updateArticleById =() => {
-
-// }
+exports.updateArticleById =(votes_inc, article_id) => {  
+    if(isNaN(votes_inc)) {
+        return Promise.reject({
+            status: 400, message: 'invalid data type'
+        })
+    }
+    if(isNaN(article_id)) {
+        return Promise.reject({
+            status: 400, message: 'article_id must be a number'
+        })
+    }
+    return db
+    .query(
+        `SELECT article_id FROM articles
+         WHERE article_id = $1`, [article_id])
+    .then((result)=> {
+        const { rows } = result
+        if (rows.length === 0) {
+            return Promise.reject({ 
+                status: 404, message: 'article_id does not exist'
+            })
+        }
+    }
+    ).then(() => {
+    return db
+    .query(
+        `SELECT votes FROM articles
+         WHERE article_id = $1`, [article_id]
+    )
+    })
+    .then((result)=> {
+        const existingVotes = result.rows[0].votes
+        const updatedVotes = existingVotes + votes_inc
+       return db
+       .query(
+        `UPDATE articles
+        SET
+        votes = $1
+        WHERE article_id = $2
+        RETURNING *;
+        `, [updatedVotes, article_id]
+       )      
+    })
+   
+}
