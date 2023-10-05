@@ -1,21 +1,21 @@
 {
-"GET /api/articles": {
-    "description": "serves an array of all articles",
-    "queries": [],
-    "exampleResponse": [{ }]
-  },
   "GET /api/articles/:article_id": {
     "description": "allows the client to search articles by article_id serves up an article object",
     "queries": ["article_id"],
-    "exampleResponse": { 
-      "article_id": 1,
-      "title": "Living in the shadow of a great man",
-      "topic": "mitch",
-      "author": "butter_bridge",
-      "body": "I find this existence challenging",
-      "created_at": 1594329060000,
-      "votes": 100,
-      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+    "exampleResponse": 
+      {
+        "article" : [
+          {
+          "article_id": 1,
+          "title": "Living in the shadow of a great man",
+          "topic": "mitch",
+          "author": "butter_bridge",
+          "body": "I find this existence challenging",
+          "created_at": 1594329060000,
+          "votes": 100,
+          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+        }
+      ]
     }
   },
   "GET /api": {
@@ -61,6 +61,21 @@
         "article_id": 1
       }
     ]
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "allows client to add a comment to a specified article",
+    "queries": ["article_id"],
+    "exampleResponse": {
+      "comment": [
+        {
+          "comment_id": 19,
+          "body": "well well well",
+          "article_id": 2,
+          "author": "butter_bridge",
+          "votes": 0,
+          "created_at": "2023-10-04T18:50:57.810Z"
+        }
+      ]   
+    }
   }
- 
 }
