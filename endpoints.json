@@ -77,5 +77,10 @@
         }
       ]   
     }
+  },
+  "GET /api/": {
+    "description": "use comment_id to delete a comment",
+    "queries": ["comment_id"],
+    "exampleResponse": "no response"
   }
 }
