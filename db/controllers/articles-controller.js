@@ -1,4 +1,10 @@
-const {fetchArticlesById, createArticleComment} = require('../models/articles-model')
+const {fetchArticles, fetchArticlesById, createArticleComment} = require('../models/articles-model')
+
+exports.getArticles = (req, res, next) => {
+    fetchArticles().then((articles) => {
+        res.status(200).send({ articles });
+      });
+}
 
 exports.getArticlesById = (req, res, next) => {
     const { article_id } = req.params;

@@ -6,6 +6,7 @@ const request = require("supertest");
 const app = require('../db/app');
 const endpoints = require('../endpoints.json')
 
+
 beforeEach(() => seed(data));
 afterAll(() => db.end());
 
@@ -23,7 +24,9 @@ describe('GET /api/topics', () => {
         .get('/api/topics')
         .then(({ body }) => {
         const topics = body.topics;
+
         expect(Array.isArray(topics)).toBe(true);
+
         topics.forEach((topic) => {
             expect(typeof topic.slug).toBe('string');
             expect(typeof topic.description).toBe('string');            
@@ -52,8 +55,44 @@ describe('GET /api sends an object with all apis available', () => {
             }   
         })
     })
-   
+   })
+describe('GET /api/articles', () => {
+    test('Responds with status code 200 and with response object with correct properties', () => {
+        return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({ body }) => {
+            const articles = body.articles
+
+            expect(Array.isArray(articles)).toBe(true);
+            expect(articles.length).toBe(13)
+            
+            articles.forEach((article) => {
+                expect(article).toMatchObject({ 
+                    article_id: expect.any(Number),
+                    title: expect.any(String),
+                    topic: expect.any(String),
+                    author: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    article_img_url: expect.any(String),
+                    comment_count: expect.any(String)
+                })
+                expect(article).not.toHaveProperty("body")         
+            });
+        })
+    })
+    test('the articles are sorted by date in descending order', () => {
+        return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({ body }) => {
+            const articles = body.articles
+            expect(articles).toBeSortedBy('created_at', {descending: true})
+        })
+    })
 })
+
 describe('GET /api/articles/:article_id', () => {
     test('when queried with an article id, Responds with status code 200 and with response object with correct properties', () => {
         return request(app)
