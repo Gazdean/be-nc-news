@@ -19,8 +19,7 @@ exports.getAllArticleComments = (req, res, next) => {
     const { article_id } = req.params;
     const allPromises = Promise.all([ fetchArticlesById(article_id), fetchAllArticleComments(article_id)])
         allPromises.then((result) => {  
-        const {comments} = result[1]    
-        console.log(comments, 'controller')    
+        const {comments} = result[1]       
         res.status(200).send({ comments });
     })
     .catch(next)
