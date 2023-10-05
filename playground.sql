@@ -1,7 +1,8 @@
 \c nc_news_test  
 
-SELECT * FROM articles;
+UPDATE articles
+SET
+votes = 10
+WHERE article_id = 1;
 
-
-
-SELECT username FROM users
+SELECT * FROM articles

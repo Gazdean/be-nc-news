@@ -139,6 +139,5 @@ exports.updateArticleById =(votes_inc, article_id) => {
         RETURNING *;
         `, [updatedVotes, article_id]
        )      
-    })
-   
+    }) 
 }

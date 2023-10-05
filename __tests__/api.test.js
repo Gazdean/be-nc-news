@@ -365,5 +365,4 @@ describe('PATCH /api/articles/:article_id', () => {
             expect(body.message).toBe('article_id does not exist');
           });
       });
-
 })
