@@ -119,7 +119,7 @@ describe('GET /api/articles/:article_id/comments', () => {
             expect(comments).toBeSortedBy('created_at', {descending: true})
         })
     })
-    test.only('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {
+    test('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {
         return request(app)
           .get('/api/articles/99999/comments')
           .expect(404)        
@@ -133,6 +133,16 @@ describe('GET /api/articles/:article_id/comments', () => {
         .expect(400)
         .then(({ body }) => {
         expect(body.message).toBe('bad request');
+        });
+    })
+    test('when queried with a valid article id, but article has no comments it responds with status code 200 and with responds with empty array', () => {
+        return request(app)
+        .get('/api/articles/2/comments')
+        .expect(200)
+        .then(({ body }) => {
+            const comments = body.comments
+            console.log(comments, 'test ????????')
+            expect(comments.length).toBe(0)               
         });
     })
 })
