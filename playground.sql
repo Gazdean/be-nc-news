@@ -1,8 +1,12 @@
 \c nc_news_test  
 
-UPDATE articles
-SET
-votes = 10
-WHERE article_id = 1;
 
-SELECT * FROM articles
+SELECT * FROM comments;
+
+DELETE FROM comments
+WHERE comment_id = 2;
+
+
+
+
+SELECT * FROM comments;

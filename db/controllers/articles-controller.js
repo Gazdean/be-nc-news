@@ -10,7 +10,9 @@ exports.getArticlesById = (req, res, next) => {
         .then(({article}) => {
         res.status(200).send({ article });
     })
-    .catch(next)
+    .catch((err) => {
+        next(err)
+    })
 };
 exports.getAllArticleComments = (req, res, next) => {
     const { article_id } = req.params;
@@ -19,7 +21,9 @@ exports.getAllArticleComments = (req, res, next) => {
         const {comments} = result[1]       
         res.status(200).send({ comments });
     })
-    .catch(next)
+    .catch((err) => {
+        next(err)
+    })
 };
 exports.postArticleComment = (req, res, next) => {
     const { username, body } = req.body
@@ -40,5 +44,7 @@ exports.patchArticleById = (req, res, next) => {
         const article = result.rows[0]    
         res.status(201).send({ article });
     })
-    .catch(next)
+    .catch((err) => {
+        next(err)
+    })
 }
