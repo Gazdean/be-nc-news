@@ -14,6 +14,7 @@ exports.postArticleComment = (req, res, next) => {
     const { article_id } = req.params
     createArticleComment(article_id, username, body)
     .then ((rows) => {
+        console.log(rows)
         res.status(201).send({ comment: rows })
     })
     .catch((err) => {

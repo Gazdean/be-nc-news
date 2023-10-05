@@ -18,9 +18,27 @@ exports.fetchArticlesById = (article_id) => {
 };
 
 exports.createArticleComment = (article_id, username, body) => {
-    
+    if(isNaN(article_id)) {
+        return Promise.reject({
+            status: 400, message: 'article_id must be a number'
+        })
+    }
+    return db
+    .query(
+        `SELECT article_id FROM articles
+         WHERE article_id = $1`, [article_id])
+    .then((result)=> {
+        const { rows } = result
+        if (rows.length === 0) {
+            return Promise.reject({ 
+                status: 404, message: 'article_id does not exist'
+        })
+    }
+    }
+    ).then(() => {
     return db.query('SELECT username FROM users')
-    .then((usernames) => {
+    }
+    ).then((usernames) => {
         const users = usernames.rows
         let validUsername = false
         users.forEach((user) => {
@@ -38,7 +56,7 @@ exports.createArticleComment = (article_id, username, body) => {
             })
         } else if (validUsername === false) {
             return Promise.reject ({
-                status: 401, message: 'user name does not exist'
+                status: 404, message: 'user name does not exist'
             })
         } else { 
             return db.query(`
@@ -47,7 +65,7 @@ exports.createArticleComment = (article_id, username, body) => {
             RETURNING *;`
             , [article_id, username, body])
             .then((result) => {
-                return result.rows;
+                return result.rows[0];
             })
         }  
     })

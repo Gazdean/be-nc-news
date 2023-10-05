@@ -98,8 +98,8 @@ describe('POST /api/articles/:article_id/comments', () => {
             body: "well well well"
         })
         .expect(201)
-        .then(({body}) => {
-            const comment = body.comment[0]; 
+        .then(({body}) => {    
+            const comment = body.comment;
             expect(comment).toMatchObject({ 
                 body: "well well well",
                 votes: expect.any(Number),
@@ -120,6 +120,26 @@ describe('POST /api/articles/:article_id/comments', () => {
             expect(body.message).toBe('both username and comment body is required')
         })
     })
+    test('if client supplies extra fields they are ignored', () => {
+        return request(app)
+        .post("/api/articles/2/comments")
+        .send({
+            username: "butter_bridge",
+            body: "well well well",
+            extrsProp: "extra value"
+        })
+        .expect(201)
+        .then(({body}) => {       
+            const comment = body.comment;
+            expect(comment).toMatchObject({ 
+                body: "well well well",
+                votes: expect.any(Number),
+                article_id: 2,
+                author: "butter_bridge",
+                comment_id:  expect.any(Number)
+            });
+        });
+    }) 
     test('if user name doesnt exist in database return error code 401 and helpful message', () => {
         return request(app)
         .post('/api/articles/2/comments')
@@ -127,7 +147,7 @@ describe('POST /api/articles/:article_id/comments', () => {
         username: 'herbert_sherbert', 
         body: 'hello great'
         })
-        .expect(401)
+        .expect(404)
         .then(({ body }) => {
             expect(body.message).toBe('user name does not exist')
         })
@@ -144,6 +164,22 @@ describe('POST /api/articles/:article_id/comments', () => {
             expect(body.message).toBe('invalid data type')
         })
     })
+    test("when client uses an invalid article_id responds with status code 400 and an error message ", () => {
+        return request(app)
+        .post("/api/articles/notANumber/comments")
+        .expect(400)
+        .then(({ body }) => {
+        expect(body.message).toBe('article_id must be a number');
+        });
+    })
+    test('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {
+        return request(app)
+          .post('/api/articles/99999/comments')
+          .expect(404)        
+          .then(({body}) => {
+            expect(body.message).toBe('article_id does not exist');
+          });
+      });
 })
 describe('error handling for all invalid paths', () => {
     test('reponds with a status code 404 and the message invaid path', () => {
