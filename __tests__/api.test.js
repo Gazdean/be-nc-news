@@ -179,7 +179,7 @@ describe('POST /api/articles/:article_id/comments', () => {
             });
         });
     }) 
-    test('if user name doesnt exist in database return error code 401 and helpful message', () => {
+    test('if user name doesnt exist in database return error code 404 and helpful message', () => {
         return request(app)
         .post('/api/articles/2/comments')
         .send({
