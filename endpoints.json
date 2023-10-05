@@ -1,4 +1,9 @@
 {
+"GET /api/articles": {
+    "description": "serves an array of all articles",
+    "queries": [],
+    "exampleResponse": [{ }]
+  },
   "GET /api/articles/:article_id": {
     "description": "allows the client to search articles by article_id serves up an article object",
     "queries": ["article_id"],
@@ -57,5 +62,5 @@
       }
     ]
   }
-  
+ 
 }
