@@ -3,9 +3,7 @@ exports.invalidEndpoint = (req, res) => {
 }
 exports.customError = (err, req, res, next) => {
     if (err.status) {
-        res
-        .status([err.status])
-        .send({ message: err.message });
+        res.status([err.status]).send({ message: err.message });
     }
     next(err);
 }
