@@ -1,7 +1,9 @@
 You are now connected to database "nc_news_test" as user "garethdean".
- comment_id |      body      | article_id |    author     | votes |         created_at         
-------------+----------------+------------+---------------+-------+----------------------------
-         19 | jhdfgjhdsagfjf |          2 | butter_bridge |     0 | 2023-10-04 17:26:48.353309
-(1 row)
+   username    
+---------------
+ butter_bridge
+ icellusedkars
+ rogersop
+ lurker
+(4 rows)
 
-INSERT 0 1
