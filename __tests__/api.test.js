@@ -51,7 +51,7 @@ describe('GET /api sends an object with all apis available', () => {
                 expect(body[key]).toHaveProperty('description');
                 expect(body[key]).toHaveProperty('queries');
                 expect(body[key]).toHaveProperty('exampleResponse');
-                expect(Object.keys(body[key]).length).toBe(3)              
+                expect(Object.keys(body[key]).length).toBe(4)              
             }   
         })
     })
