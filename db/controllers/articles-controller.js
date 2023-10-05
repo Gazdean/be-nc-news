@@ -1,4 +1,4 @@
-const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment, updateArticleById} = require('../models/articles-model')
+const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment, updateArticleById, removeCommentById} = require('../models/articles-model')
 exports.getArticles = (req, res, next) => {
     fetchArticles().then((articles) => {
         res.status(200).send({ articles });
@@ -10,7 +10,9 @@ exports.getArticlesById = (req, res, next) => {
         .then(({article}) => {
         res.status(200).send({ article });
     })
-    .catch(next)
+    .catch((err) => {
+        next(err)
+    })
 };
 exports.getAllArticleComments = (req, res, next) => {
     const { article_id } = req.params;
@@ -19,7 +21,9 @@ exports.getAllArticleComments = (req, res, next) => {
         const {comments} = result[1]       
         res.status(200).send({ comments });
     })
-    .catch(next)
+    .catch((err) => {
+        next(err)
+    })
 };
 exports.postArticleComment = (req, res, next) => {
     const { username, body } = req.body
@@ -40,5 +44,17 @@ exports.patchArticleById = (req, res, next) => {
         const article = result.rows[0]    
         res.status(201).send({ article });
     })
-    .catch(next)
+    .catch((err) => {
+        next(err)
+    })
 }
+exports.deleteCommentById = (req, res, next) => {
+    const { comment_id } = req.params;
+    removeCommentById(comment_id)
+        .then((result) => {
+        res.status(204).send();
+    })
+    .catch((err) => {
+        next(err)
+    })
+};
