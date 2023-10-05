@@ -1,4 +1,4 @@
-const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment} = require('../models/articles-model')
+const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment, /*updateArticleById*/} = require('../models/articles-model')
 
 exports.getArticles = (req, res, next) => {
     fetchArticles().then((articles) => {
@@ -35,3 +35,12 @@ exports.postArticleComment = (req, res, next) => {
         next(err)
     })
 }
+// exports.updateArticleById = (req, res, next) => {
+//     updateArticleById()
+//     .then(() => {
+
+//     })
+//     .catch((err) => {
+//         next(err)
+//     })
+// }

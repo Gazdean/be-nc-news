@@ -97,3 +97,6 @@ exports.createArticleComment = (article_id, username, body) => {
         }  
     })
 }
+// exports.updateArticleById =() => {
+
+// }

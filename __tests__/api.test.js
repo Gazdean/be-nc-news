@@ -278,3 +278,8 @@ describe('error handling for all invalid paths', () => {
             });
     })
 })
+// describe('PATCH /api/articles/:article_id', () => {
+//     test('', () => {
+
+//     })
+// })
