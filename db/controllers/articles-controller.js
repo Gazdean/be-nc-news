@@ -12,7 +12,7 @@ exports.getArticlesById = (req, res, next) => {
 exports.getAllArticleComments = (req, res, next) => {
     const { article_id } = req.params;
     fetchAllArticleComments(article_id)
-        .then(({ comments }) => {
+        .then(({ comments }) => {          
         res.status(200).send({ comments });
     })
     .catch(next)

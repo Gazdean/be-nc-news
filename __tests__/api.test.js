@@ -91,13 +91,14 @@ describe('GET /api/articles/:article_id', () => {
 })
 
 describe('GET /api/articles/:article_id/comments', () => {
-    test('when queried with an article id, Responds with status code 200 and with response object with correct properties', () => {
+    test('when queried with a valid article id, Responds with status code 200 and with response object with correct properties', () => {
         return request(app)
         .get('/api/articles/1/comments')
         .expect(200)
         .then(({ body }) => {
             const comments = body.comments
             comments.forEach((comment) => {
+                expect(Object.keys(comment).length).toBe(6) 
                 expect(comment).toMatchObject({ 
                     article_id: 1,
                     comment_id: expect.any(Number),
@@ -115,11 +116,10 @@ describe('GET /api/articles/:article_id/comments', () => {
         .expect(200)
         .then(({ body }) => {
             const comments = body.comments
-            console.log(comments)
             expect(comments).toBeSortedBy('created_at', {descending: true})
         })
     })
-    test('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {
+    test.only('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {
         return request(app)
           .get('/api/articles/99999/comments')
           .expect(404)        
