@@ -25,7 +25,6 @@ exports.createArticleComment = (article_id, username, body) => {
         let validUsername = false
         users.forEach((user) => {
         if(username === user.username) {
-            console.log(username, user.username)
             return validUsername = true
         }
         }) 
@@ -48,7 +47,6 @@ exports.createArticleComment = (article_id, username, body) => {
             RETURNING *;`
             , [article_id, username, body])
             .then((result) => {
-                console.log(result.rows, '<<<<<<<<<<<<<<<<')
                 return result.rows;
             })
         }  
