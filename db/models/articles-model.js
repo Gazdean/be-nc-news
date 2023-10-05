@@ -142,3 +142,14 @@ exports.updateArticleById =(votes_inc, article_id) => {
     })
    
 }
+exports.fetchAllUsers = () => {
+    return db
+    .query(
+        `SELECT *
+         FROM users
+         ` 
+    )
+    .then((result)=> {
+        return result.rows;
+    })   
+}

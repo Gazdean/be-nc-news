@@ -367,3 +367,29 @@ describe('PATCH /api/articles/:article_id', () => {
       });
 
 })
+describe('GET /api/users', () => {
+    test('Responds with status code 200 and with response message of all users', () => {
+    return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toHaveProperty('users');
+            });
+    });  
+    test("Data is in the correct format", () => {
+        return request(app)
+        .get('/api/users')
+        .then(({ body }) => {
+        const users = body.users;
+
+        expect(Array.isArray(users)).toBe(true);
+console.log(users)
+        users.forEach((user) => {
+            expect(Object.keys(user).length).toBe(3) 
+            expect(typeof user.username).toBe('string');
+            expect(typeof user.name).toBe('string');            
+            expect(typeof user.avatar_url).toBe('string');            
+        });
+        });
+     }); 
+})
