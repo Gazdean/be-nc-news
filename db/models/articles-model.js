@@ -127,4 +127,16 @@ exports.removeCommentById = (comment_id) => {
         } else
             return result.rows
     })
-};
+   
+}
+exports.fetchAllUsers = () => {
+    return db
+    .query(
+        `SELECT *
+         FROM users
+         ` 
+    )
+    .then((result)=> {
+        return result.rows;
+    })   
+}

@@ -1,4 +1,4 @@
-const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment, updateArticleById, removeCommentById} = require('../models/articles-model')
+const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment, updateArticleById, fetchAllUsers, removeCommentById} = require('../models/articles-model')
 exports.getArticles = (req, res, next) => {
     fetchArticles().then((articles) => {
         res.status(200).send({ articles });
@@ -44,9 +44,14 @@ exports.patchArticleById = (req, res, next) => {
         const article = result[1]       
         res.status(201).send({ article });       
     })
-    .catch((err) => {
+        .catch((err) => {
         next(err)
     })
+}
+exports.getAllUsers = (req, res, next) => {
+    fetchAllUsers().then((users) => {
+        res.status(200).send({ users });
+    })  
     .catch((err) => {
         next(err)
     })

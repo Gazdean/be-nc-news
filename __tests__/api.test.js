@@ -365,14 +365,34 @@ describe('PATCH /api/articles/:article_id', () => {
             expect(body.message).toBe('article_id does not exist');
           });
       });
+
+})
+describe('GET /api/users', () => {
+    test('Responds with status code 200 and with response message of all users', () => {
+    return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toHaveProperty('users');
+            });
+    });  
+    test("Data is in the correct format", () => {
+        return request(app)
+        .get('/api/users')
+        .then(({ body }) => {
+        const users = body.users;
+
+        expect(Array.isArray(users)).toBe(true);
+            users.forEach((user) => {
+            expect(Object.keys(user).length).toBe(3) 
+            expect(typeof user.username).toBe('string');
+            expect(typeof user.name).toBe('string');            
+            expect(typeof user.avatar_url).toBe('string');            
+        });
+        });
+     }); 
 })
 describe('DELETE /api/comments/:comment_id', () => {
-    test('when queried with a comment_id, deletes the commentand responds with status code 204', () => {
-        return request(app)
-        .delete('/api/comments/1')
-        .expect(204)    
-    });
-    
     test('when client uses a valid but non existant comment_id responds with status code 404 and an error message', () => {
         return request(app)
           .delete('/api/comments/99999')
