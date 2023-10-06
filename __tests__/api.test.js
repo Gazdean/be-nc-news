@@ -127,6 +127,15 @@ describe('GET /api/articles/:article_id', () => {
         expect(body.message).toBe('bad request');
         });
     })
+    test('the response objects has a comment_count property, which is the total number of comments for that article', () => {
+        return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then(({ body }) => {
+            const commentCount = body.article.comment_count
+            expect(commentCount).toBe("11")       
+        });
+    })
 })
 describe('GET /api/articles/:article_id/comments', () => {
     test('when queried with a valid article id, Responds with status code 200 and with response object with correct properties', () => {
