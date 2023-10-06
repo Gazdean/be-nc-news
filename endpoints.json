@@ -109,7 +109,7 @@
   },
   "DELETE /api/comments/:comment_id": {
     "description": "use comment_id to delete a comment",
-    "request body": "{ inc_votes: newVote }",
+    "request body": "",
     "queries": ["comment_id"],
     "exampleResponse": "no response"
   }
