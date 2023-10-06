@@ -1,21 +1,35 @@
 const db = require('../connection')
-const format = require('pg-format')
 
 exports.fetchArticles = (topic) => {
-    const value = []
-    let whereString = ""
-    if(topic) {
-        whereString = `WHERE topic = $1`
-        value.push(topic)
-    }
-    const query = `SELECT articles.article_id, articles.author, articles.title, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments. article_id) AS comment_count
-         FROM articles
-         LEFT JOIN comments ON comments.article_id = articles.article_id
-         ${whereString}
-         GROUP BY articles.article_id
-         ORDER BY created_at DESC;`
     return db
-    .query(query, value)
+    .query(`
+        SELECT * FROM topics
+        WHERE topics.slug = $1;
+    `, [topic])
+    .then((result) => {
+        console.log(result.rows)
+        if(topic && result.rows.length === 0) {
+            console.log('here')
+            return Promise.reject ({
+                status: 404, message: 'topic doesnt exist'
+            })
+        } else {
+        const value = []
+        let whereString = ""
+        if(topic) {
+            whereString = `WHERE topic = $1`
+            value.push(topic)
+        }
+        const query = `SELECT articles.article_id, articles.author, articles.title, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments. article_id) AS comment_count
+            FROM articles
+            LEFT JOIN comments ON comments.article_id = articles.article_id
+            ${whereString}
+            GROUP BY articles.article_id
+            ORDER BY created_at DESC;`
+        return db
+        .query(query, value)
+    }
+    })
     .then((result)=> {
         return result.rows;
     })   
