@@ -344,7 +344,7 @@ describe('PATCH /api/articles/:article_id', () => {
         .send({inc_votes: "notANumber"})
         .expect(400)
         .then(({ body }) => {
-            expect(body.message).toBe('invalid data type')
+            expect(body.message).toBe('bad request')
         })
     }) 
      test("when client uses an invalid article_id responds with status code 400 and an error message ", () => {
@@ -353,7 +353,7 @@ describe('PATCH /api/articles/:article_id', () => {
          .send({inc_votes: -10})
          .expect(400)
          .then(({ body }) => {
-         expect(body.message).toBe('article_id must be a number');
+         expect(body.message).toBe('bad request');
          });
     })
     test('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {

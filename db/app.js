@@ -15,7 +15,6 @@ app.patch('/api/articles/:article_id', patchArticleById)
 //Error handling
 app.all('/*', invalidEndpoint)
 app.use(customError)
-app.use(customError)
 app.use(psqlError)
 app.use(internalServerError);
 module.exports = app

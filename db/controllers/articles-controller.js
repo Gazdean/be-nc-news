@@ -38,11 +38,11 @@ exports.postArticleComment = (req, res, next) => {
 }
 exports.patchArticleById = (req, res, next) => {
     const { inc_votes } = req.body
-    const { article_id } = req.params;
-    updateArticleById(inc_votes, article_id)
-   .then((result) => {       
-        const article = result.rows[0]    
-        res.status(201).send({ article });
+    const { article_id } = req.params;   
+    const allPromises = Promise.all([ fetchArticlesById(article_id), updateArticleById(inc_votes, article_id)])
+    allPromises.then((result) => {       
+        const article = result[1].rows[0]         
+        res.status(201).send({ article });       
     })
     .catch((err) => {
         next(err)
