@@ -51,12 +51,10 @@ exports.patchArticleById = (req, res, next) => {
 exports.deleteCommentById = (req, res, next) => {
     const { comment_id } = req.params;
     removeCommentById(comment_id)
-        .then((result) => {
-        console.log(result)
+        .then(() => {
         res.status(204).send("");
     })
     .catch((err) => {
-        console.log(err)
         next(err)
     })
 };
