@@ -102,7 +102,7 @@ describe('GET /api/articles', () => {
     })
     test('when queried with an invalid topic it returns an empty array and status code 200', () => {
         return request(app)
-        .get('/api/articles?topic=invalidTopic')
+        .get('/api/articles?topic=topicDoesntExist')
         .expect(200)
         .then(({ body }) => {
             const articles = body.articles

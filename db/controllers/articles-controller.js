@@ -1,6 +1,5 @@
 const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment, updateArticleById, fetchAllUsers, removeCommentById} = require('../models/articles-model')
 exports.getArticles = (req, res, next) => {
-    console.log(req.query)
     const { topic } = req.query;
     fetchArticles(topic)
     .then((articles) => {
