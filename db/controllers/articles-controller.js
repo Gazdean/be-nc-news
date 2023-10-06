@@ -42,9 +42,6 @@ exports.patchArticleById = (req, res, next) => {
     })
     .catch(next)
 }
-exports.getAllUsers = () => {
-
-}
 exports.getAllUsers = (req, res, next) => {
     fetchAllUsers().then((users) => {
         res.status(200).send({ users });
