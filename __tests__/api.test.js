@@ -366,3 +366,27 @@ describe('PATCH /api/articles/:article_id', () => {
           });
       });
 })
+describe('DELETE /api/comments/:comment_id', () => {
+    test('when queried with a comment_id, deletes the commentand responds with status code 204', () => {
+        return request(app)
+        .delete('/api/comments/1')
+        .expect(204)    
+    });
+    
+    test('when client uses a valid but non existant comment_id responds with status code 404 and an error message', () => {
+        return request(app)
+          .delete('/api/comments/99999')
+          .expect(404)        
+          .then(({body}) => {
+            expect(body.message).toBe('comment_id does not exist');
+          });
+      });
+    test("when client uses an invalid comment_id responds with status code 400 and an error message ", () => {
+        return request(app)
+        .delete("/api/comments/notANumber")
+        .expect(400)
+        .then(({ body }) => {
+        expect(body.message).toBe('bad request');
+        });
+    })
+})
