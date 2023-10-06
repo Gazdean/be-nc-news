@@ -151,6 +151,26 @@ describe('GET /api/articles/:article_id', () => {
         expect(body.message).toBe('bad request');
         });
     })
+    test('the response objects has a comment_count property, which is the total number of comments for that article', () => {
+        return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then(({ body }) => {
+            const commentCount = body.article.comment_count
+            expect(commentCount).toBe("11")
+            expect(body.article).toMatchObject({ 
+                article_id: 1,
+                comment_count: "11",
+                title: expect.any(String),
+                topic: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                article_img_url: expect.any(String)
+            })                 
+        });
+    })
 })
 describe('GET /api/articles/:article_id/comments', () => {
     test('when queried with a valid article id, Responds with status code 200 and with response object with correct properties', () => {
