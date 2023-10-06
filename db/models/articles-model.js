@@ -108,6 +108,6 @@ exports.updateArticleById =(votes_inc, article_id) => {
         `, [votes_inc, article_id]
        )
        .then((result) => {
-        return result
+        return result.rows[0]
        })   
 }

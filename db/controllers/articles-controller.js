@@ -41,7 +41,7 @@ exports.patchArticleById = (req, res, next) => {
     const { article_id } = req.params;   
     const allPromises = Promise.all([ fetchArticlesById(article_id), updateArticleById(inc_votes, article_id)])
     allPromises.then((result) => {       
-        const article = result[1].rows[0]         
+        const article = result[1]       
         res.status(201).send({ article });       
     })
     .catch((err) => {
