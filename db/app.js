@@ -14,6 +14,7 @@ app.post('/api/articles/:article_id/comments', postArticleComment)
 app.patch('/api/articles/:article_id', patchArticleById)
 app.get('/api/users',getAllUsers )
 app.delete('/api/comments/:comment_id', deleteCommentById)
+
 //Error handling
 app.all('/*', invalidEndpoint)
 app.use(customError)
