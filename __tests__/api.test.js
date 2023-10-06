@@ -383,8 +383,7 @@ describe('GET /api/users', () => {
         const users = body.users;
 
         expect(Array.isArray(users)).toBe(true);
-console.log(users)
-        users.forEach((user) => {
+            users.forEach((user) => {
             expect(Object.keys(user).length).toBe(3) 
             expect(typeof user.username).toBe('string');
             expect(typeof user.name).toBe('string');            
