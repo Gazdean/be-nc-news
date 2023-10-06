@@ -1,28 +1,29 @@
-const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment, /*updateArticleById*/} = require('../models/articles-model')
-
+const {fetchArticles, fetchArticlesById, fetchAllArticleComments, createArticleComment, updateArticleById} = require('../models/articles-model')
 exports.getArticles = (req, res, next) => {
     fetchArticles().then((articles) => {
         res.status(200).send({ articles });
       });
 }
-
 exports.getArticlesById = (req, res, next) => {
     const { article_id } = req.params;
     fetchArticlesById(article_id)
         .then(({article}) => {
         res.status(200).send({ article });
     })
-    .catch(next)
+    .catch((err) => {
+        next(err)
+    })
 };
-
 exports.getAllArticleComments = (req, res, next) => {
     const { article_id } = req.params;
     const allPromises = Promise.all([ fetchArticlesById(article_id), fetchAllArticleComments(article_id)])
-        allPromises.then((result) => {  
+    allPromises.then((result) => {  
         const {comments} = result[1]       
         res.status(200).send({ comments });
     })
-    .catch(next)
+    .catch((err) => {
+        next(err)
+    })
 };
 exports.postArticleComment = (req, res, next) => {
     const { username, body } = req.body
@@ -35,12 +36,15 @@ exports.postArticleComment = (req, res, next) => {
         next(err)
     })
 }
-// exports.updateArticleById = (req, res, next) => {
-//     updateArticleById()
-//     .then(() => {
-
-//     })
-//     .catch((err) => {
-//         next(err)
-//     })
-// }
+exports.patchArticleById = (req, res, next) => {
+    const { inc_votes } = req.body
+    const { article_id } = req.params;   
+    const allPromises = Promise.all([ fetchArticlesById(article_id), updateArticleById(inc_votes, article_id)])
+    allPromises.then((result) => {       
+        const article = result[1].rows[0]         
+        res.status(201).send({ article });       
+    })
+    .catch((err) => {
+        next(err)
+    })
+}

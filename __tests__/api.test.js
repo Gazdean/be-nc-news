@@ -51,7 +51,7 @@ describe('GET /api sends an object with all apis available', () => {
                 expect(body[key]).toHaveProperty('description');
                 expect(body[key]).toHaveProperty('queries');
                 expect(body[key]).toHaveProperty('exampleResponse');
-                expect(Object.keys(body[key]).length).toBe(3)              
+                expect(Object.keys(body[key]).length).toBe(4)              
             }   
         })
     })
@@ -179,7 +179,6 @@ describe('GET /api/articles/:article_id/comments', () => {
         .expect(200)
         .then(({ body }) => {
             const comments = body.comments
-            console.log(comments, 'test ????????')
             expect(comments.length).toBe(0)               
         });
     })
@@ -278,8 +277,92 @@ describe('error handling for all invalid paths', () => {
             });
     })
 })
-// describe('PATCH /api/articles/:article_id', () => {
-//     test('', () => {
-
-//     })
-// })
+describe('PATCH /api/articles/:article_id', () => {
+    test("when passed a positive vote_inc value it returns an updated article object along with 201 status", () => {
+        return request(app)
+        .patch("/api/articles/1")
+        .send( {inc_votes: 10} )
+        .expect(201)
+        .then(({body}) => {    
+            const article = body.article;
+            expect(article).toMatchObject({ 
+                article_id: 1,
+                title: expect.any(String),
+                topic: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: 110,
+                article_img_url: expect.any(String)
+            });
+        });
+    })
+    test("when passed a negative vote_inc value it returns an updated article object along with 201 status", () => {
+        return request(app)
+        .patch("/api/articles/1")
+        .send( {inc_votes: -10} )
+        .expect(201)
+        .then(({body}) => {    
+            const article = body.article;
+            expect(article).toMatchObject({ 
+                article_id: 1,
+                title: expect.any(String),
+                topic: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: 90,
+                article_img_url: expect.any(String)
+            });
+        });
+    })
+    test("'if client supplies extra fields they are ignored'", () => {
+        return request(app)
+        .patch("/api/articles/1")
+        .send( {
+            inc_votes: 10,
+            extraProp: "value"
+                } )
+        .expect(201)
+        .then(({body}) => {    
+            const article = body.article;
+            expect(article).toMatchObject({ 
+                article_id: 1,
+                title: expect.any(String),
+                topic: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: 110,
+                article_img_url: expect.any(String)
+            });
+        });
+    })
+    test('if client sends incorrect data sends a 400 error message and helpful message',() => {
+        return request(app)
+        .patch('/api/articles/1')
+        .send({inc_votes: "notANumber"})
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.message).toBe('bad request')
+        })
+    }) 
+     test("when client uses an invalid article_id responds with status code 400 and an error message ", () => {
+         return request(app)
+         .patch("/api/articles/notANumber")
+         .send({inc_votes: -10})
+         .expect(400)
+         .then(({ body }) => {
+         expect(body.message).toBe('bad request');
+         });
+    })
+    test('when client uses a valid but non existant article_id responds with status code 404 and an error message', () => {
+        return request(app)
+          .patch('/api/articles/99999')
+          .send({inc_votes: -10})
+          .expect(404)        
+          .then(({body}) => {
+            expect(body.message).toBe('article_id does not exist');
+          });
+      });
+})

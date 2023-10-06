@@ -97,6 +97,17 @@ exports.createArticleComment = (article_id, username, body) => {
         }  
     })
 }
-// exports.updateArticleById =() => {
-
-// }
+exports.updateArticleById =(votes_inc, article_id) => {  
+       return db
+       .query(
+        `UPDATE articles
+        SET
+        votes = votes + $1
+        WHERE article_id = $2
+        RETURNING *;
+        `, [votes_inc, article_id]
+       )
+       .then((result) => {
+        return result
+       })   
+}
