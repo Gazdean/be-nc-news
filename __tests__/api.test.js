@@ -63,7 +63,6 @@ describe('GET /api/articles', () => {
         .expect(200)
         .then(({ body }) => {
             const articles = body.articles
-
             expect(Array.isArray(articles)).toBe(true);
             expect(articles.length).toBe(13)
             
@@ -91,8 +90,33 @@ describe('GET /api/articles', () => {
             expect(articles).toBeSortedBy('created_at', {descending: true})
         })
     })
+    test('when queried with a topic value it responds status code 200 and with all article of that topic', () => {
+        return request(app)
+        .get('/api/articles?topic=mitch')
+        .expect(200)
+        .then(({ body }) => {
+            const articles = body.articles
+            expect(articles.length).toBe(12)
+        })
+    })
+    test('when queried with a topic that is in the database but has no articles, it returns an empty array and status code 200', () => {
+        return request(app)
+        .get('/api/articles?topic=paper')
+        .expect(200)
+        .then(({ body }) => {
+            const articles = body.articles
+            expect(articles.length).toBe(0)
+        })
+    })
+    test('when queried with a topic that is not in the database, status code 404 and helpful message', () => {
+        return request(app)
+        .get('/api/articles?topic=topicNotInDatabase')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.message).toBe('topic doesnt exist');
+        })
+    })
 })
-
 describe('GET /api/articles/:article_id', () => {
     test('when queried with an article id, Responds with status code 200 and with response object with correct properties', () => {
         return request(app)
