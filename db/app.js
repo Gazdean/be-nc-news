@@ -16,7 +16,6 @@ app.delete('/api/comments/:comment_id', deleteCommentById)
 //Error handling
 app.all('/*', invalidEndpoint)
 app.use(customError)
-app.use(customError)
 app.use(psqlError)
 app.use(internalServerError);
 module.exports = app
