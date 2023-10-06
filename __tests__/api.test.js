@@ -91,8 +91,25 @@ describe('GET /api/articles', () => {
             expect(articles).toBeSortedBy('created_at', {descending: true})
         })
     })
+    test('when queried with a topic value it responds status code 200 and with all article of that topic', () => {
+        return request(app)
+        .get('/api/articles?topic=mitch')
+        .expect(200)
+        .then(({ body }) => {
+            const articles = body.articles
+            expect(articles.length).toBe(12)
+        })
+    })
+    test('when queried with an invalid topic it returns an empty array and status code 200', () => {
+        return request(app)
+        .get('/api/articles?topic=invalidTopic')
+        .expect(200)
+        .then(({ body }) => {
+            const articles = body.articles
+            expect(articles.length).toBe(0)
+        })
+    })
 })
-
 describe('GET /api/articles/:article_id', () => {
     test('when queried with an article id, Responds with status code 200 and with response object with correct properties', () => {
         return request(app)
